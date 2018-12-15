@@ -3,10 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
+ * @Vich\Uploadable
  */
 class Post
 {
@@ -44,10 +46,14 @@ class Post
 
     /**
      * @ORM\Column(type="string", length=2000, nullable=true)
-     *
-     * @Assert\File(mimeTypes={ "image/*" })
      */
-    private $thumbnail;
+    private $image;
+
+    /**
+     * @Vich\UploadableField(mapping="post_img", fileNameProperty="image")
+     * @var File
+     */
+    private $imageFile;
 
     /**
      * @ORM\Column(type="boolean")
@@ -124,16 +130,30 @@ class Post
         return $this;
     }
 
-    public function getThumbnail(): ?string
+    public function getImage(): ?string
     {
-        return $this->thumbnail;
+        return $this->image;
     }
 
-    public function setThumbnail(?string $thumbnail): self
+    public function setImage(?string $image): self
     {
-        $this->thumbnail = $thumbnail;
+        $this->image = $image;
 
         return $this;
+    }
+
+    public function setImageFile(File $image = null)
+    {
+        $this->imageFile = $image;
+
+        if ($image) {
+            $this->date_add = new \DateTime();
+        }
+    }
+
+    public function getImageFile()
+    {
+        return $this->imageFile;
     }
 
     public function getPublished(): ?bool
