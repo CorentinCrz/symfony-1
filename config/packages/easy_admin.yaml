@@ -3,7 +3,6 @@ easy_admin:
         Post:
             class: App\Entity\Post
             form:
-                fields: ['title', 'exerpt', 'content', 'author', 'thumbnail', 'published']
+                fields: ['title', 'exerpt', 'content', { property: 'imageFile', type: 'vich_image' }, 'author', 'published']
             list:
-#                fields: ['id', 'title', 'exerpt', 'author', { property: 'dateAdd', format: 'd/m/Y' }, 'published']
-                fields: ['id', 'title', 'exerpt', 'author', 'published']
+                fields: ['id', 'title', 'exerpt', 'author', { property: 'dateAdd', type: 'datetime', format: 'd/m/Y' }, 'published']
